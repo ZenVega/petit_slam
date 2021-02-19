@@ -1,0 +1,11 @@
+.Header{
+  @include flexbox(row, space-between);
+  position:fixed;
+  width:100vw;
+  padding:0 20px;
+
+  .Nav{
+    @include flexbox(row);
+    gap:20px;
+  }
+}
