@@ -1,19 +1,34 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import fire from '../backend/firebase'
 
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
-import Main from './components/Main/Main'
+
+import Home from './components/Main/Home'
+import About from './components/Main/About'
+import League from './components/Main/League'
+import Stadions from './components/Main/Stadions'
+import Players from './components/Main/Players'
 
 
 function App() {
 
   return (
-    <div className="App">
-      <Header/>
-      <Main/>
-      <Footer/>
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Switch>
+          <Route path="/about" component={About} />
+          <Route path="/league" component={League} />
+          <Route path="/stadions" component={Stadions} />
+          <Route path="/players" component={Players} />
+          <Route path="/" exact component={Home} />
+        </Switch>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

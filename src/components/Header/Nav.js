@@ -1,15 +1,30 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom'
 
-import Rider from './Rider'
+
 
 
 function Nav() {
 
   return (
     <div className="Nav">
-      <Rider name="about"/>
-      <Rider name="league"/>
-      <Rider name="stadions"/>
+
+        <NavLink to="/about" activeClassName="active">
+          About
+        </NavLink>
+
+        <NavLink to="/league" activeClassName="active">
+          League
+        </NavLink>
+
+        <NavLink to="/stadions" activeClassName="active">
+          Stadions
+        </NavLink>
+
+        <NavLink to="/players" activeClassName="active">
+          Players
+        </NavLink>
+
     </div>
   );
 }

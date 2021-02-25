@@ -2,10 +2,26 @@
   @include flexbox(row, space-between);
   position:fixed;
   width:100vw;
+  height:70px;
   padding:0 20px;
 
   .Nav{
     @include flexbox(row);
     gap:20px;
+    
+    .active{
+      color:blue;
+    }
+  }
+  
+  .User{
+    
+    @include flexbox(row);
+    gap:10px;
+    
+    #settings-icon{
+      width:20px;
+    }
+
   }
 }
