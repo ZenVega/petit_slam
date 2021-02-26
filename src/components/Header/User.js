@@ -1,5 +1,5 @@
 import React from 'react';
-import{ Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, openLogin, openRegistration } from '../../actions/index'
@@ -14,7 +14,7 @@ function User() {
     dispatch(openLogin(true))
     dispatch(login("Ursi"))
   }
-  
+
   const logoutHandler = () => {
     dispatch(openLogin(false))
     dispatch(logout())
@@ -24,7 +24,8 @@ function User() {
     if (!logged) {
       return (
         <div className="User">
-          <button onClick={() => loginHandler()}>Login</button>
+          <button onClick={() => loginHandler()}>login</button>
+          <button onClick={() => dispatch(openRegistration(true))}>register</button>
         </div>
       )
     } else {
@@ -43,7 +44,7 @@ function User() {
 
 
 
-  return( returnUser(logged) )
+  return (returnUser(logged))
 
 
 }

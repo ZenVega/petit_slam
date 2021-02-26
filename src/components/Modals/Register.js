@@ -1,9 +1,13 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { openRegistration } from '../../actions/index'
 
 export default function Register() {
+  const dispatch = useDispatch()
   return (
     <div className="Modal">
       <div className="modal-container">
+        <button className="close-modal-button" onClick={() => dispatch(openRegistration(false))} >x</button>
         <h2>Register</h2>
 
         <form action="">
