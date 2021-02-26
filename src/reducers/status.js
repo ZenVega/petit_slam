@@ -1,5 +1,5 @@
 const initialUserState = {
-  "loggedIn": false,
+  "loggedIn": true,
   "user": undefined
 }
 
