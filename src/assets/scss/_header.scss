@@ -5,6 +5,12 @@
   height:70px;
   padding:0 20px;
 
+  h1{
+    position:absolute;
+    left:50%;
+    transform:translate(-50%, -50%);
+  }
+
   .Nav{
     @include flexbox(row);
     gap:20px;

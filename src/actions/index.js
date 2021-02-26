@@ -10,3 +10,17 @@ export const logout = () => {
     type: 'LOG_OUT'
   }
 }
+
+export const openLogin = bool => {
+  return {
+    type: 'LOGIN_OPEN',
+    payload: bool
+  }
+}
+
+export const openRegistration = bool => {
+  return {
+    type: 'REGISTRATION_OPEN',
+    payload: bool
+  }
+}

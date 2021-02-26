@@ -2,28 +2,30 @@ import React from 'react';
 import { NavLink } from 'react-router-dom'
 
 
+import { useSelector } from 'react-redux'
 
 
 function Nav() {
+  const logged = useSelector(state => state.userStatus.loggedIn)
 
   return (
     <div className="Nav">
 
-        <NavLink to="/about" activeClassName="active">
-          About
+      <NavLink to="/about" activeClassName="active">
+        About
         </NavLink>
 
-        <NavLink to="/league" activeClassName="active">
-          League
+      <NavLink to="/league" activeClassName="active">
+        League
         </NavLink>
 
-        <NavLink to="/stadions" activeClassName="active">
-          Stadions
+      <NavLink to="/stadions" activeClassName="active">
+        Stadions
         </NavLink>
 
-        <NavLink to="/players" activeClassName="active">
-          Players
-        </NavLink>
+      {logged && <NavLink to="/players" activeClassName="active">
+        Players
+        </NavLink>}
 
     </div>
   );

@@ -1,9 +1,10 @@
-import { userStatus } from './status';
+import { userStatus, modalOpen } from './status';
 
 import { combineReducers } from 'redux';
 
 const allReducers = combineReducers({
-  userStatus
+  userStatus,
+  modalOpen
 
 })
 

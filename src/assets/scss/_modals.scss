@@ -1,0 +1,19 @@
+.Modal{
+  position:fixed;
+  width: 100vw;
+  height: 100vh;
+  top:70px;
+  left:0;
+  background:$modal-transparent;
+  @include flexbox(column);
+  z-index: 1;
+  
+  .modal-container{
+    @include flexbox(column);
+    background-color: $modal-bg-color;
+    width:400px;
+    height:200px;
+  }
+}
+
+
