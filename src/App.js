@@ -1,6 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import fire from '../backend/firebase'
+
+import firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/auth'
+
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+
 
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'

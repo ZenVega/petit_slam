@@ -1,9 +1,9 @@
-import headerReducer from './header';
+import { userStatus } from './status';
 
 import { combineReducers } from 'redux';
 
 const allReducers = combineReducers({
-  header: headerReducer
+  userStatus
 
 })
 

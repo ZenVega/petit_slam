@@ -1,12 +1,12 @@
-export const increment = (nr) => {
+export const login = user => {
   return {
-    type: 'INCREMENT',
-    payload: nr
+    type: 'LOG_IN',
+    payload: user
   }
 }
 
-export const decrement = () => {
+export const logout = () => {
   return {
-    type: 'DECREMENT'
+    type: 'LOG_OUT'
   }
 }
