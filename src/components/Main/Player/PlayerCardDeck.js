@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import db from '../../../firebase'
+import firebase from '../../../firebase'
 
 import PlayerCard from './PlayerCard'
 
 export default function PlayerCardDeck() {
-  const userRef = db.ref('user')
+  const userRef = firebase.database().ref('user')
 
   const [playerList, setPlayerlist] = useState([])
 

@@ -1,5 +1,5 @@
 const initialUserState = {
-  "loggedIn": true,
+  "loggedIn": false,
   "user": undefined
 }
 
@@ -24,6 +24,7 @@ export const userStatus = (state = initialUserState, action) => {
 const initialModalState = {
   "loginOpen": false,
   "registerOpen": false,
+  "registerSuccessOpen": true,
   "verifyMail": false
 }
 
@@ -40,6 +41,12 @@ export const modalOpen = (state = initialModalState, action) => {
       return {
         ...state,
         "registerOpen": action.payload
+      }
+
+    case 'REGISTRATION_SUCCESS_OPEN':
+      return {
+        ...state,
+        "registerSuccessOpen": action.payload
       }
 
     default:

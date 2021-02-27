@@ -24,3 +24,10 @@ export const openRegistration = bool => {
     payload: bool
   }
 }
+
+export const openRegistrationSuccess = bool => {
+  return {
+    type: 'REGISTRATION_SUCCESS_OPEN',
+    payload: bool
+  }
+}

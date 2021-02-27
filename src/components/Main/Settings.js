@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import db from '../../firebase'
+import firebase from '../../firebase'
 
 function Settings() {
 
@@ -23,8 +23,8 @@ function Settings() {
   }
 
   const handleSubmit = () => {
-    console.log(db)
-    const userRef = db.ref('user')
+
+    const userRef = firebase.database().ref('user')
     const user = {
       username,
       mail,

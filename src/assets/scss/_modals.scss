@@ -12,7 +12,23 @@
     @include flexbox(column);
     background-color: $modal-bg-color;
     width:400px;
-    height:200px;
+    height:250px;
+    form{
+      @include flexbox(column, space-between, flex-end);
+      gap:10px;
+
+      label, input, button{
+        width:100%;
+      }
+
+    }
+  }
+
+  .registration-success{
+    background: url("https://bilder4.n-tv.de/img/incoming/crop15091731/4361328873-cImg_16_9-w1200/Boris-becker.jpg") no-repeat center top;
+    background-size: cover;
+    color:$modal-bg-color;
+    padding-top:150px;
   }
 }
 
