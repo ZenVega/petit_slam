@@ -1,15 +1,16 @@
 import React from 'react';
+import PlayerCardDeck from './Player/PlayerCardDeck'
 
+import db from '../../firebase'
 
 
 function Players() {
 
+
   return (
     <div className="Main Players">
       <h1>Players</h1>
-      <form action="">
-        <input type="text" name="name"/>
-      </form>
+      <PlayerCardDeck />
     </div>
   );
 }
