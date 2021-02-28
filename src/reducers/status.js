@@ -23,7 +23,7 @@ export const userStatus = (state = initialUserState, action) => {
 
 const initialModalState = {
   "loginOpen": false,
-  "registerOpen": true,
+  "registerOpen": false,
   "registerSuccessOpen": false,
   "verifyMail": false
 }

@@ -2,17 +2,24 @@
   position:fixed;
   width: 100vw;
   height: 100vh;
-  top:70px;
+  top:0;
   left:0;
   background:$modal-transparent;
   @include flexbox(column);
   z-index: 1;
   
   .modal-container{
-    @include flexbox(column);
+    @include flexbox(column, center, flex-start);
     background-color: $modal-bg-color;
     width:400px;
-    height:280px;
+    height:310px;
+    padding:0 60px;
+    gap:10px;
+
+    .close-modal-button{
+      align-self: flex-end;
+    }
+
     form{
       @include flexbox(column, space-between, flex-end);
       gap:10px;
@@ -25,29 +32,39 @@
       }
     }
 
+    form{
+      width:280px;
+    }
+    
     .input-error{
       position:relative;
       color:$error-color;
       align-self: flex-end;
-      margin-right: 60px;
+      margin-right: 0px;
       font-size: 14px;
     }
   }
 
   .register{
     #mail-error-1{
-      top:-145px;
+      top:-159px;
     }
     #mail-error-2{
-      top:-145px;
+      top:-159px;
     }
     
     #password-error-1{
-      top:-48px;
+      top:-64px;
     }
     
     #password-error-2{
-      top:-48px;
+      top:-64px;
+    }
+  }
+  
+  .login{
+    .input-error{
+      top:-58px;
     }
   }
 

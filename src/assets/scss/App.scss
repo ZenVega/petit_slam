@@ -34,3 +34,9 @@ body {
   min-height:100vh;
   @include flexbox(column, space-between);
 }
+
+button{
+  background:inherit;
+  padding:2px 4px;
+  border:solid 2px black;
+}
