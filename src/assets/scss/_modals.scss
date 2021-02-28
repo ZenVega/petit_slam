@@ -12,7 +12,7 @@
     @include flexbox(column);
     background-color: $modal-bg-color;
     width:400px;
-    height:250px;
+    height:280px;
     form{
       @include flexbox(column, space-between, flex-end);
       gap:10px;
@@ -20,7 +20,34 @@
       label, input, button{
         width:100%;
       }
+      button{
+        margin-top: 20px;
+      }
+    }
 
+    .input-error{
+      position:relative;
+      color:$error-color;
+      align-self: flex-end;
+      margin-right: 60px;
+      font-size: 14px;
+    }
+  }
+
+  .register{
+    #mail-error-1{
+      top:-145px;
+    }
+    #mail-error-2{
+      top:-145px;
+    }
+    
+    #password-error-1{
+      top:-48px;
+    }
+    
+    #password-error-2{
+      top:-48px;
     }
   }
 
