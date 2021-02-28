@@ -10,7 +10,8 @@ function User() {
   const dispatch = useDispatch();
 
   const logged = useSelector(state => state.userStatus.loggedIn)
-  
+  const activeUser = useSelector(state => state.userStatus.activeUser)
+
 
   const logoutHandler = e => {
     firebase.auth().signOut().then((e) => {
@@ -30,7 +31,7 @@ function User() {
       return (
         <div className="User">
           <button onClick={() => logoutHandler()}>Logout</button>
-          <p>Username</p>
+          {activeUser && <p>{activeUser.username}</p>}
           <div id="user-icon"></div>
           <Link to="/settings">
             <img id="settings-icon" src="../img/settings-icon.png" alt="settings-icon" />

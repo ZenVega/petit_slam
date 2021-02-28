@@ -2,10 +2,14 @@ import React, { useState } from 'react'
 
 import firebase from '../../firebase'
 import { useDispatch } from 'react-redux'
-import { openLogin, login } from '../../actions/index'
+import { openLogin } from '../../actions/index'
+
+
 
 function Login() {
   const [inputError, setInputError] = useState(false)
+  const dispatch = useDispatch()
+
 
   const loginHandler = e => {
     e.preventDefault();
@@ -13,24 +17,17 @@ function Login() {
 
     const email = e.target['login-email'].value
     const password = e.target['login-password'].value
-    console.log(email, password)
 
     firebase.auth().signInWithEmailAndPassword(email, password).then(cred => {
-      console.log(cred.user)
-      dispatch(login("Ursi"))
-
-    }).then(() => {
       dispatch(openLogin(false))
 
     }).catch(error => {
-      console.log('error', error)
       setInputError(true)
     })
 
   }
 
 
-  const dispatch = useDispatch()
   return (
     <div className="Modal">
       <div className="modal-container login">

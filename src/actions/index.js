@@ -31,3 +31,10 @@ export const openRegistrationSuccess = bool => {
     payload: bool
   }
 }
+
+export const setActiveUser = data => {
+  return {
+    type: 'ACTIVE_USER',
+    payload: data
+  }
+}

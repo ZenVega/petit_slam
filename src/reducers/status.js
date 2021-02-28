@@ -53,3 +53,18 @@ export const modalOpen = (state = initialModalState, action) => {
       return state
   }
 }
+
+const initialActiveUser = {
+  "username": undefined,
+  "id": undefined,
+  "email": undefined
+}
+
+export const activeUser = (state = initialActiveUser, action) => {
+  switch (action.type) {
+    case 'ACTIVE_USER':
+      return action.payload
+    default:
+      return state
+  }
+}

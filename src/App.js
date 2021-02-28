@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
+import firebase from './firebase'
 
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
@@ -14,10 +15,39 @@ import Players from './components/Main/Players'
 import Settings from './components/Main/Settings'
 import Modals from './components/Modals/Modals'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { login, logout, setActiveUser } from './actions/index'
 
 function App() {
+  const dispatch = useDispatch()
   const logged = useSelector(state => state.userStatus.loggedIn)
+
+  const logHandler = user => {
+
+    if (user) {
+      console.log(user)
+      const userToUpload = {
+        "id": user.l,
+        "username": user.displayName,
+        "email": user.email
+      }
+      dispatch(setActiveUser(userToUpload))
+      dispatch(login())
+    } else {
+      const userToUpload = {
+        "id": undefined,
+        "username": undefined,
+        "email": undefined
+      }
+      dispatch(setActiveUser(userToUpload))
+      dispatch(logout())
+    }
+
+  }
+
+  firebase.auth().onAuthStateChanged(user => {
+    logHandler(user)
+  })
 
   return (
     <Router>

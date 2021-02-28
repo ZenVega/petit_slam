@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import firebase from '../../firebase'
 
-import { openRegistration, openRegistrationSuccess, login } from '../../actions/index'
+import { openRegistration, openRegistrationSuccess, login, setActiveUser } from '../../actions/index'
 
 export default function Register() {
   const dispatch = useDispatch()
@@ -44,6 +44,7 @@ export default function Register() {
       setPassword1Error(true)
     }
   }
+
 
   return (
     <div className="Modal">
