@@ -25,7 +25,7 @@ const initialModalState = {
   "loginOpen": false,
   "registerOpen": false,
   "registerSuccessOpen": false,
-  "verifyMail": false
+  "verifyMailOpen": true
 }
 
 export const modalOpen = (state = initialModalState, action) => {
@@ -47,6 +47,11 @@ export const modalOpen = (state = initialModalState, action) => {
       return {
         ...state,
         "registerSuccessOpen": action.payload
+      }
+    case 'VERIFY_EMAIL_OPEN':
+      return {
+        ...state,
+        "verifyMailOpen": action.payload
       }
 
     default:

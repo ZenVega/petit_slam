@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 
 import firebase from '../../firebase'
 import { useDispatch } from 'react-redux'
-import { openLogin } from '../../actions/index'
+import { openLogin, login, openVerifyEmail } from '../../actions/index'
+import {verifyEmail} from './Register'
 
 
 
@@ -19,7 +20,14 @@ function Login() {
     const password = e.target['login-password'].value
 
     firebase.auth().signInWithEmailAndPassword(email, password).then(cred => {
-      dispatch(openLogin(false))
+      if(cred.user.emailVerified){
+        dispatch(login())
+        dispatch(openLogin(false))
+      } else {
+        dispatch(openLogin(false))
+        verifyEmail()
+        dispatch(openVerifyEmail(true))
+      }
 
     }).catch(error => {
       setInputError(true)

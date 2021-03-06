@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import firebase from '../../firebase'
 
@@ -9,18 +9,18 @@ import { logout, openLogin, openRegistration } from '../../actions/index'
 function User() {
   const dispatch = useDispatch();
 
-  const logged = useSelector(state => state.userStatus.loggedIn)
-  const activeUser = useSelector(state => state.userStatus.activeUser)
+  const activeUser = useSelector(state => state.activeUser)
 
 
   const logoutHandler = e => {
-    firebase.auth().signOut().then((e) => {
+    firebase.auth().signOut()
+    .then((e) => {
       dispatch(logout())
     })
   }
 
-  const returnUser = logged => {
-    if (!logged) {
+  const returnUser = activeUser => {
+    if (!activeUser.id) {
       return (
         <div className="User">
           <button onClick={() => dispatch(openLogin(true))}>login</button>
@@ -32,7 +32,9 @@ function User() {
         <div className="User">
           <button onClick={() => logoutHandler()}>Logout</button>
           {activeUser && <p>{activeUser.username}</p>}
-          <div id="user-icon"></div>
+          {activeUser && <div id="user-icon">
+            <img src={activeUser.profilePic} alt=""/>
+          </div>}
           <Link to="/settings">
             <img id="settings-icon" src="../img/settings-icon.png" alt="settings-icon" />
           </Link>
@@ -43,7 +45,7 @@ function User() {
 
 
 
-  return (returnUser(logged))
+  return (returnUser(activeUser))
 
 
 }

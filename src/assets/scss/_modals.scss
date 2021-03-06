@@ -60,6 +60,14 @@
     #password-error-2{
       top:-64px;
     }
+
+    .mailSendOverlay{
+      position:relative;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+    }
   }
   
   .login{
@@ -73,6 +81,10 @@
     background-size: cover;
     color:$modal-bg-color;
     padding-top:150px;
+
+    button{
+      color:$modal-bg-color;
+    }
   }
 }
 

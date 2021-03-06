@@ -32,6 +32,13 @@ export const openRegistrationSuccess = bool => {
   }
 }
 
+export const openVerifyEmail = bool => {
+  return {
+    type: 'VERIFY_EMAIL_OPEN',
+    payload: bool
+  }
+}
+
 export const setActiveUser = data => {
   return {
     type: 'ACTIVE_USER',

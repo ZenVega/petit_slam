@@ -2,14 +2,32 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import firebase from '../../firebase'
 
-import { openRegistration, openRegistrationSuccess, login, setActiveUser } from '../../actions/index'
+import { openRegistration, openVerifyEmail, logout } from '../../actions/index'
 
+export const verifyEmail = () => {
+  const user = firebase.auth().currentUser;
+  user.sendEmailVerification().then(function() {
+    
+  }).catch(function(error) {
+    // An error happened.
+  });
+}
 export default function Register() {
   const dispatch = useDispatch()
   const [mail1Error, setMail1Error] = useState(false)
   const [mail2Error, setMail2Error] = useState(false)
   const [password1Error, setPassword1Error] = useState(false)
   const [password2Error, setPassword2Error] = useState(false)
+
+  const mailSend = false
+
+  const updateUsername = username => {
+    firebase.auth().currentUser.updateProfile({
+      displayName: username,
+      photoURL: "https://www.pinclipart.com/picdir/middle/188-1884364_table-tennis-ping-pong-logo-png-clipart.png"
+    }).catch(err => console.log(err.message))
+  }
+
 
 
   const signUp = e => {
@@ -20,17 +38,23 @@ export default function Register() {
     setPassword2Error(false)
 
     const email = e.target['signup-email'].value
+    const username = e.target['signup-name'].value
     const password = e.target['signup-password'].value
     const passwordConfirm = e.target['signup-password-confirm'].value
 
     if (password === passwordConfirm) {
-      firebase.auth().createUserWithEmailAndPassword(email, password).then(cred => {
-        console.log(cred.user)
-        dispatch(login("Ursi"))
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(()=>{
+        updateUsername(username)
+      }).then(() => {
+        verifyEmail()
       }).then(() => {
         dispatch(openRegistration(false))
+        firebase.auth().signOut()
+        dispatch(logout())
       }).then(() => {
-        dispatch(openRegistrationSuccess(true))
+        dispatch(openVerifyEmail(true))
+        mailSend = true
       }).catch(error => {
         if (error.message === "The email address is badly formatted.") {
           setMail1Error(true)
@@ -57,6 +81,9 @@ export default function Register() {
           <label > email
             <input type="text" id="email" name="signup-email" />
           </label>
+          <label > alias
+            <input type="text" id="alias" name="signup-name" />
+          </label>
 
           <label> password
             <input type="text" type="password" name="password" id="signup-password" />
@@ -71,6 +98,9 @@ export default function Register() {
         {password2Error && <p id="password-error-2" className="input-error" >password needs at least 6 characters</p>}
         {mail1Error && <p id="mail-error-1" className="input-error" >incorrect mail</p>}
         {mail2Error && <p id="mail-error-2" className="input-error" >mail already registered</p>}
+        {mailSend && <div className="mailSendOverlay"><p>
+          We've send you an email. Please Verify that adress to move on
+        </p></div>}
 
 
       </div>
