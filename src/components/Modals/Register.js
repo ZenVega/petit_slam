@@ -9,7 +9,7 @@ export const verifyEmail = () => {
   user.sendEmailVerification().then(function() {
     
   }).catch(function(error) {
-    // An error happened.
+    console.log(error.message)
   });
 }
 export default function Register() {
@@ -22,9 +22,16 @@ export default function Register() {
   const mailSend = false
 
   const updateUsername = username => {
+    const id = firebase.auth().currentUser.uid;
+    const userRef = firebase.database().ref('user/' + id)
+    const user = {
+      username
+    }
+    userRef.set(user)
+
+
     firebase.auth().currentUser.updateProfile({
-      displayName: username,
-      photoURL: "https://www.pinclipart.com/picdir/middle/188-1884364_table-tennis-ping-pong-logo-png-clipart.png"
+      displayName: username
     }).catch(err => console.log(err.message))
   }
 
@@ -44,8 +51,8 @@ export default function Register() {
 
     if (password === passwordConfirm) {
       firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(()=>{
-        updateUsername(username)
+      .then((cred)=>{
+        updateUsername(username, cred)
       }).then(() => {
         verifyEmail()
       }).then(() => {

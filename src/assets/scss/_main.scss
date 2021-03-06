@@ -6,3 +6,12 @@
   @include flexbox(column, space-evenly);
   gap:40px;
 }
+
+
+.Settings{
+  .uploader{
+    width:200px;
+    height:10px;
+    background-color: darkgoldenrod;
+  }
+}

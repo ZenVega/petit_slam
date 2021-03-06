@@ -22,30 +22,21 @@ import { login, logout, setActiveUser } from './actions/index'
 function App() {
   const dispatch = useDispatch()
   const logged = useSelector(state => state.userStatus.loggedIn)
-  const default_logo = './assets/img/default_logo.png'
 
   
   const logHandler = user => {
-    if (user) {
-      console.log(user)
+    if (user && user.emailVerified) {
+      const id = firebase.auth().currentUser.uid;
       const userToUpload = {
-        "id": user.l,
+        "id": id,
         "username": user.displayName,
-        "email": user.email,
-        "profilePic": default_logo
+        "email": user.email
       }
-      console.log(userToUpload)
       dispatch(setActiveUser(userToUpload))
-      if(user.emailVerified){
-        dispatch(login())
-      }
+      dispatch(login())
+
     } else {
-      const userToUpload = {
-        "id": undefined,
-        "username": undefined,
-        "email": undefined,
-        "profilePic":undefined
-      }
+      const userToUpload = {}
       dispatch(setActiveUser(userToUpload))
       firebase.auth().signOut()
       dispatch(logout())

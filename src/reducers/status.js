@@ -25,7 +25,7 @@ const initialModalState = {
   "loginOpen": false,
   "registerOpen": false,
   "registerSuccessOpen": false,
-  "verifyMailOpen": true
+  "verifyMailOpen": false
 }
 
 export const modalOpen = (state = initialModalState, action) => {

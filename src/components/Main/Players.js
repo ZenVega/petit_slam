@@ -1,7 +1,6 @@
 import React from 'react';
 import PlayerCardDeck from './Player/PlayerCardDeck'
 
-import db from '../../firebase'
 
 
 function Players() {

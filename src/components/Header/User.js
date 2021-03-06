@@ -35,9 +35,10 @@ function User() {
           {activeUser && <div id="user-icon">
             <img src={activeUser.profilePic} alt=""/>
           </div>}
+          {activeUser &&
           <Link to="/settings">
-            <img id="settings-icon" src="../img/settings-icon.png" alt="settings-icon" />
-          </Link>
+            <img id="settings-icon" src="gs://petit-slam.appspot.com/default_logo.png" alt="settings-icon" />
+          </Link>}
         </div>
       )
     }
