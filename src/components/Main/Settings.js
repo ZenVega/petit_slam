@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'
 
+import ImageLoader from './Settings/ImageLoader'
+
 import firebase from '../../firebase'
 
 function Settings() {
   const id = useSelector(state => state.activeUser.id)
+  const [user, setUser] = useState({})
 
-  const [username, setUsername] = useState("")
-  const [mail, setMail] = useState("")
-  const [attack, setAttack] = useState("")
-  const [image, setImage] = useState("")
   
+  const userRef = firebase.database().ref("user/" + id)
   
   const initialStats = () => {
     const mail = firebase.auth().currentUser.email
-    
-    const userRef = firebase.database().ref("user/" + id)
+
     userRef.on('value', (snapshot) => {
-    const initUser =snapshot.val()
+    const initUser = snapshot.val()
       if(initUser){
-        setUsername(initUser.username)
-        setMail(mail)
-        setAttack(initUser.attack)
+        setUser({
+          "username": initUser.username,
+          "mail": mail,
+          "attack": initUser.attack,
+          "id": id
+        })
       }
   });
   }
@@ -33,45 +35,23 @@ function Settings() {
 
 
 
-  const handleImageInput = e => {
-      const image = e.target.files[0]
-      const reader = new FileReader();
-      reader.addEventListener('load', (e) => {
-        setImage(e.target.result)
-      })
-      reader.readAsDataURL(image)
-
-
-      const storageRef = firebase.storage().ref('user/img/' + image.name)
-      const task = storageRef.put(image)
-      task.on('state_changed', (snapshot) => {
-        const percentage = snapshot.bytesTransferred / snapshot.totalBytes
-        console.log(percentage)
-      })
-
-  }
-
+  
   const handleChange = e => {
     switch (e.target.id) {
       case "Username":
-        setUsername(e.target.value);
-        break;
-      case "Mail":
-        setMail(e.target.value);
+        setUser({...user,"username":e.target.value});
         break;
       case "Attack":
-        setAttack(e.target.value);
+        setUser({...user,"attack":e.target.value});
         break;
     }
   }
 
   const handleSubmit = () => {
 
-    const userRef = firebase.database().ref('user/' + id)
-    const user = {
-      username
-    }
     userRef.set(user)
+    
+
   }
 
   return (
@@ -84,7 +64,7 @@ function Settings() {
           type="text"
           onChange={handleChange}
           id="Username"
-          value={username}
+          value={user.username}
         />
       </label>
 
@@ -93,7 +73,7 @@ function Settings() {
           type="text"
           onChange={handleChange}
           id="Mail"
-          value={mail}
+          value={user.mail}
         />
       </label>
 
@@ -102,13 +82,12 @@ function Settings() {
           type="text"
           onChange={handleChange}
           id="Attack"
-          value={attack}
+          value={user.attack}
         />
       </label>
 
-      <img id="preview-image" src={image} alt=""/>
-      <div className="uploader"></div>
-      <input type="file" id="fileButton" onChange={e => handleImageInput(e)}/>
+      <ImageLoader
+      userID={id}/>
 
       <button type="submit" onClick={handleSubmit}>Submit</button>
 
