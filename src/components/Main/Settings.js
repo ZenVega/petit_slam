@@ -22,8 +22,6 @@ function Settings() {
         setUsername(initUser.username)
         setMail(mail)
         setAttack(initUser.attack)
-      } else {
-
       }
   });
   }
@@ -36,7 +34,14 @@ function Settings() {
 
 
   const handleImageInput = e => {
-      setImage(e.target.files[0])
+      const image = e.target.files[0]
+      const reader = new FileReader();
+      reader.addEventListener('load', (e) => {
+        setImage(e.target.result)
+      })
+      reader.readAsDataURL(image)
+
+
       const storageRef = firebase.storage().ref('user/img/' + image.name)
       const task = storageRef.put(image)
       task.on('state_changed', (snapshot) => {
@@ -101,7 +106,7 @@ function Settings() {
         />
       </label>
 
-      {image && <img src={image} alt=""/>}
+      <img id="preview-image" src={image} alt=""/>
       <div className="uploader"></div>
       <input type="file" id="fileButton" onChange={e => handleImageInput(e)}/>
 

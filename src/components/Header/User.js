@@ -37,7 +37,7 @@ function User() {
           </div>}
           {activeUser &&
           <Link to="/settings">
-            <img id="settings-icon" src="gs://petit-slam.appspot.com/default_logo.png" alt="settings-icon" />
+            <img id="settings-icon" src="../img/settings-icon.png" alt="settings-icon" />
           </Link>}
         </div>
       )
