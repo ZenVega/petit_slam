@@ -8,8 +8,8 @@ import { logout, openLogin, openRegistration } from '../../actions/index'
 
 function User() {
   const dispatch = useDispatch();
-
   const activeUser = useSelector(state => state.activeUser)
+  const profilePic = useSelector(state => state.activeUser.profilePic)
 
 
   const logoutHandler = e => {
@@ -33,7 +33,7 @@ function User() {
           <button onClick={() => logoutHandler()}>Logout</button>
           {activeUser && <p>{activeUser.username}</p>}
           {activeUser && <div id="user-icon">
-            <img src={activeUser.profilePic} alt=""/>
+            <img src={profilePic} alt=""/>
           </div>}
           {activeUser &&
           <Link to="/settings">

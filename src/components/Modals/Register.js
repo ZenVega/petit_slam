@@ -12,6 +12,8 @@ export const verifyEmail = () => {
     console.log(error.message)
   });
 }
+
+
 export default function Register() {
   const dispatch = useDispatch()
   const [mail1Error, setMail1Error] = useState(false)
@@ -25,15 +27,16 @@ export default function Register() {
     const id = firebase.auth().currentUser.uid;
     const userRef = firebase.database().ref('user/' + id)
     const user = {
-      username
+      username,
+      "profilePic": "firstSignUp/default_logo.png"
+      }
+      userRef.set(user)
+      
+      firebase.auth().currentUser.updateProfile({
+        displayName: username
+      }).catch(err => console.log(err.message))
     }
-    userRef.set(user)
-
-
-    firebase.auth().currentUser.updateProfile({
-      displayName: username
-    }).catch(err => console.log(err.message))
-  }
+  
 
 
 
@@ -52,7 +55,7 @@ export default function Register() {
     if (password === passwordConfirm) {
       firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((cred)=>{
-        updateUsername(username, cred)
+        updateUsername(username)
       }).then(() => {
         verifyEmail()
       }).then(() => {

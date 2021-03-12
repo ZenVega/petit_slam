@@ -21,7 +21,6 @@ function Login() {
 
     firebase.auth().signInWithEmailAndPassword(email, password).then(cred => {
       if(cred.user.emailVerified){
-        dispatch(login())
         dispatch(openLogin(false))
       } else {
         dispatch(openLogin(false))

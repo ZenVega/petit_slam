@@ -8,7 +8,6 @@ import firebase from '../../firebase'
 function Settings() {
   const id = useSelector(state => state.activeUser.id)
   const [user, setUser] = useState({})
-
   
   const userRef = firebase.database().ref("user/" + id)
   
@@ -22,7 +21,8 @@ function Settings() {
           "username": initUser.username,
           "mail": mail,
           "attack": initUser.attack,
-          "id": id
+          "id": id,
+          "profilePic": initUser.profilePic
         })
       }
   });
@@ -48,10 +48,7 @@ function Settings() {
   }
 
   const handleSubmit = () => {
-
     userRef.set(user)
-    
-
   }
 
   return (
@@ -87,7 +84,7 @@ function Settings() {
       </label>
 
       <ImageLoader
-      userID={id}/>
+        userID={id}/>
 
       <button type="submit" onClick={handleSubmit}>Submit</button>
 

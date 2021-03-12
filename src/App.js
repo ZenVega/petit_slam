@@ -16,36 +16,44 @@ import Settings from './components/Main/Settings'
 import Modals from './components/Modals/Modals'
 
 import { useSelector, useDispatch } from 'react-redux'
-import { login, logout, setActiveUser } from './actions/index'
+import { login, setActiveUser } from './actions/index'
 
 
 function App() {
+  
   const dispatch = useDispatch()
   const logged = useSelector(state => state.userStatus.loggedIn)
-
+  
   
   const logHandler = user => {
+    let userToUpload = {}
     if (user && user.emailVerified) {
-      const id = firebase.auth().currentUser.uid;
-      const userToUpload = {
-        "id": id,
-        "username": user.displayName,
-        "email": user.email
-      }
-      dispatch(setActiveUser(userToUpload))
       dispatch(login())
+      const id = firebase.auth().currentUser.uid;
+      let imageUrl
+      firebase.storage().ref(`user/${id}`).child('profilePic.jpeg').getDownloadURL()
+      .then(url => {
+        imageUrl = url
+      })
+      .then(() => {
+        userToUpload = {
+          "id": id,
+          "username": user.displayName,
+          "email": user.email,
+          "profilePic": imageUrl
+        }
+        dispatch(setActiveUser(userToUpload))
+      })
 
     } else {
-      const userToUpload = {}
       dispatch(setActiveUser(userToUpload))
-      firebase.auth().signOut()
-      dispatch(logout())
     }
   }
 
   firebase.auth().onAuthStateChanged(user => {
     logHandler(user)
   })
+
 
   return (
     <Router>
