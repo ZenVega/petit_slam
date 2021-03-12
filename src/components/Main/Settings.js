@@ -6,32 +6,32 @@ import ImageLoader from './Settings/ImageLoader'
 import firebase from '../../firebase'
 
 function Settings() {
-  const id = useSelector(state => state.activeUser.id)
+  //wird endlos gemounted why?????
+  const activeUser = useSelector(state => state.activeUser)
+  console.log(activeUser)
+  const mail = firebase.auth().currentUser.email
   const [user, setUser] = useState({})
   
-  const userRef = firebase.database().ref("user/" + id)
+  const userRef = firebase.database().ref("user/" + activeUser.id)
   
-  const initialStats = () => {
-    const mail = firebase.auth().currentUser.email
 
-    userRef.on('value', (snapshot) => {
+
+  if(userRef){
+    userRef.get().then((snapshot) => {
     const initUser = snapshot.val()
       if(initUser){
         setUser({
           "username": initUser.username,
           "mail": mail,
           "attack": initUser.attack,
-          "id": id,
+          "id": activeUser.id,
           "profilePic": initUser.profilePic
         })
       }
-  });
+    });
   }
+    
 
-  
-  useEffect(() => {
-    initialStats()
-  }, [])
 
 
 
@@ -83,8 +83,7 @@ function Settings() {
         />
       </label>
 
-      <ImageLoader
-        userID={id}/>
+      {activeUser.id && <ImageLoader userID={activeUser.id}/>}
 
       <button type="submit" onClick={handleSubmit}>Submit</button>
 
