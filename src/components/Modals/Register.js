@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import firebase from '../../backend/firebase'
+import {auth, dbRef} from '../../backend/firebase'
 
 import { openRegistration, openVerifyEmail, logout } from '../../actions/index'
 
 export const verifyEmail = () => {
-  const user = firebase.auth().currentUser;
+  const user = auth.currentUser;
   user.sendEmailVerification().then(function() {
     
   }).catch(function(error) {
@@ -23,16 +23,19 @@ export default function Register() {
 
   const mailSend = false
 
-  const updateUsername = username => {
-    const id = firebase.auth().currentUser.uid;
-    const userRef = firebase.database().ref('users/' + id)
+  const updateUsername = (username, email) => {
+    const id = auth.currentUser.uid;
+    const userRef = dbRef.ref('users/' + id)
     const user = {
       username,
-      "profilePic": "firstSignUp/default_logo.png"
+      id,
+      email,
+      "profilePic": "https://firebasestorage.googleapis.com/v0/b/petit-slam.appspot.com/o/firstSignUp%2Fdefault_logo.png?alt=media&token=7e1a8b93-affe-473d-a546-e0011f6bc70e",
+      "attack": ""
       }
       userRef.set(user)
       
-      firebase.auth().currentUser.updateProfile({
+      auth.currentUser.updateProfile({
         displayName: username
       }).catch(err => console.log(err.message))
     }
@@ -53,14 +56,14 @@ export default function Register() {
     const passwordConfirm = e.target['signup-password-confirm'].value
 
     if (password === passwordConfirm) {
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      auth.createUserWithEmailAndPassword(email, password)
       .then((cred)=>{
-        updateUsername(username)
+        updateUsername(username, email)
       }).then(() => {
         verifyEmail()
       }).then(() => {
         dispatch(openRegistration(false))
-        firebase.auth().signOut()
+        auth.signOut()
         dispatch(logout())
       }).then(() => {
         dispatch(openVerifyEmail(true))

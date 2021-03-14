@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
 import ImageLoader from './Settings/ImageLoader'
 import {setActiveUser} from './../../actions/index'
 
-import { dbRef } from '../../backend/firebase'
+import { dbRef, storageRef } from '../../backend/firebase'
 
 function Settings() {
 
   const activeUser = useSelector(state => state.activeUser)
+  const [imageFile, setImageFile] = useState()
   const userRef = dbRef.ref('users/' + activeUser.id)
+  const storageUserRef = storageRef.ref(`users/${activeUser.id}`)
   const dispatch = useDispatch()
 
   
@@ -25,8 +27,31 @@ function Settings() {
   }
 
   const handleSubmit = () => {
+    handleImageUpload()
     userRef.set(activeUser)
   }
+
+  const handleImageUpload = () => {
+    //Upload Image
+    const uploadToken = renameImage(imageFile)
+    storageUserRef.child(uploadToken).put(imageFile)
+    .then(snapshot => {
+      return snapshot.ref.getDownloadURL()
+    })
+    .then(url => {
+      const userToUpload = {...activeUser, ...{"profilePic": url}}
+      dispatch(setActiveUser(userToUpload))
+    })
+  }
+  
+
+  const renameImage = image => {
+    const slash = image.type.indexOf('/')+1
+    const type = image.type.substring(slash)
+    const newName = `profilePic.${type}`
+    return newName
+  }
+
 
   return (
     <div className="Main Settings">
@@ -52,12 +77,14 @@ function Settings() {
       </label>
 
       <div> 
-        <p>activeUser.email</p>
+        <p>{activeUser.email}</p>
         <button>change mail</button>
       </div>
 
 
-      {activeUser.id && <ImageLoader />}
+      {activeUser.id && <ImageLoader 
+        setImageFile={setImageFile}/>
+        }
 
       <button type="submit" onClick={handleSubmit}>Submit</button>
 
