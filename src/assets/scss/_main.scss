@@ -14,11 +14,40 @@
     height:10px;
     background-color: darkgoldenrod;
   }
-
+  
   #preview-image{
     background-color: #fff;
     border: 2px solid goldenrod;
     width:200px;
     height:200px;
+  }
+}
+
+.Players{
+  .PlayerCardDeck{
+    width:90vw;
+    @include flexbox(row, space-evenly);
+    flex-wrap: wrap;
+  }
+  
+  .PlayerCard{
+    width:250px;
+    height:400px;
+    padding:20px;
+    margin:20px;
+    background-color: $playerCard-bg-color ;
+    border-radius: 20px;
+    border: 2px solid $border-color;
+    
+
+    .img-wrapper{
+      width:210px;
+      height:210px;
+      border-radius: 20px;
+      border: 2px solid $border-color;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+    }
   }
 }

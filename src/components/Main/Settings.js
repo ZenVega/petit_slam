@@ -32,7 +32,6 @@ function Settings() {
   }
 
   const handleImageUpload = () => {
-    //Upload Image
     const uploadToken = renameImage(imageFile)
     storageUserRef.child(uploadToken).put(imageFile)
     .then(snapshot => {
