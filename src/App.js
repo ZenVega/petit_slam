@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import firebase from './firebase'
+import {auth, dbRef, storageRef} from './backend/firebase'
 
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
@@ -27,30 +27,37 @@ function App() {
   
   const logHandler = user => {
     let userToUpload = {}
+    let attack
+
     if (user && user.emailVerified) {
-      dispatch(login())
-      const id = firebase.auth().currentUser.uid;
-      let imageUrl
-      firebase.storage().ref(`user/${id}`).child('profilePic.jpeg').getDownloadURL()
-      .then(url => {
-        imageUrl = url
-      })
-      .then(() => {
-        userToUpload = {
-          "id": id,
-          "username": user.displayName,
-          "email": user.email,
-          "profilePic": imageUrl
+      const id = auth.currentUser.uid;
+      const userRef = dbRef.ref(`users/${id}`)
+      userRef.get().then(snapshot => {
+        if(snapshot.val()){
+          const userDB = snapshot.val()
+          return userDB
         }
-        dispatch(setActiveUser(userToUpload))
       })
+      .then((userDB) => {
+          
+          return {
+            "id": id,
+            "username": user.displayName,
+            "email": user.email,
+            "profilePic": userDB.profilePic,
+            "attack": userDB.attack
+          }
+        }).then( userToUpload => {
+          dispatch(login())
+          dispatch(setActiveUser(userToUpload))
+        })
 
     } else {
       dispatch(setActiveUser(userToUpload))
     }
   }
 
-  firebase.auth().onAuthStateChanged(user => {
+  auth.onAuthStateChanged(user => {
     logHandler(user)
   })
 

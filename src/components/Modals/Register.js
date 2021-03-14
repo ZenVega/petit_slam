@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import firebase from '../../firebase'
+import firebase from '../../backend/firebase'
 
 import { openRegistration, openVerifyEmail, logout } from '../../actions/index'
 
@@ -25,7 +25,7 @@ export default function Register() {
 
   const updateUsername = username => {
     const id = firebase.auth().currentUser.uid;
-    const userRef = firebase.database().ref('user/' + id)
+    const userRef = firebase.database().ref('users/' + id)
     const user = {
       username,
       "profilePic": "firstSignUp/default_logo.png"

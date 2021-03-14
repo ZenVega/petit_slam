@@ -1,54 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux'
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 
 import ImageLoader from './Settings/ImageLoader'
+import {setActiveUser} from './../../actions/index'
 
-import firebase from '../../firebase'
+import { dbRef } from '../../backend/firebase'
 
 function Settings() {
-  //wird endlos gemounted why?????
+
   const activeUser = useSelector(state => state.activeUser)
-  console.log(activeUser)
-  const mail = firebase.auth().currentUser.email
-  const [user, setUser] = useState({})
-  
-  const userRef = firebase.database().ref("user/" + activeUser.id)
-  
-
-
-  if(userRef){
-    userRef.get().then((snapshot) => {
-    const initUser = snapshot.val()
-      if(initUser){
-        setUser({
-          "username": initUser.username,
-          "mail": mail,
-          "attack": initUser.attack,
-          "id": activeUser.id,
-          "profilePic": initUser.profilePic
-        })
-      }
-    });
-  }
-    
-
-
-
+  const userRef = dbRef.ref('users/' + activeUser.id)
+  const dispatch = useDispatch()
 
   
   const handleChange = e => {
     switch (e.target.id) {
       case "Username":
-        setUser({...user,"username":e.target.value});
+        dispatch(setActiveUser({...activeUser,"username":e.target.value}));
         break;
-      case "Attack":
-        setUser({...user,"attack":e.target.value});
+        case "Attack":
+        dispatch(setActiveUser({...activeUser,"attack":e.target.value}));
         break;
     }
   }
 
   const handleSubmit = () => {
-    userRef.set(user)
+    userRef.set(activeUser)
   }
 
   return (
@@ -61,16 +38,7 @@ function Settings() {
           type="text"
           onChange={handleChange}
           id="Username"
-          value={user.username}
-        />
-      </label>
-
-      <label> Mail
-        <input
-          type="text"
-          onChange={handleChange}
-          id="Mail"
-          value={user.mail}
+          value={activeUser.username}
         />
       </label>
 
@@ -79,11 +47,17 @@ function Settings() {
           type="text"
           onChange={handleChange}
           id="Attack"
-          value={user.attack}
+          value={activeUser.attack}
         />
       </label>
 
-      {activeUser.id && <ImageLoader userID={activeUser.id}/>}
+      <div> 
+        <p>activeUser.email</p>
+        <button>change mail</button>
+      </div>
+
+
+      {activeUser.id && <ImageLoader />}
 
       <button type="submit" onClick={handleSubmit}>Submit</button>
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import firebase from '../../firebase'
+import firebase from '../../backend/firebase'
 
 import { openRegistrationSuccess } from '../../actions/index'
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom'
-import firebase from '../../firebase'
+import firebase from '../../backend/firebase'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, openLogin, openRegistration } from '../../actions/index'
