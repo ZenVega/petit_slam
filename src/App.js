@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
-import {auth, dbRef, storageRef} from './backend/firebase'
-
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
@@ -15,52 +13,22 @@ import Players from './components/Main/Players'
 import Settings from './components/Main/Settings'
 import Modals from './components/Modals/Modals'
 
+import {verifyEmail} from './components/Modals/Register'
+
 import { useSelector, useDispatch } from 'react-redux'
-import { login, setActiveUser } from './actions/index'
+
+
+const mailVerified = (verified) => {
+  if(!verified){
+    verifyEmail()
+  }
+}
 
 
 function App() {
   
   const dispatch = useDispatch()
-  const logged = useSelector(state => state.userStatus.loggedIn)
-  
-  
-  const logHandler = user => {
-    let userToUpload = {}
-    let attack
-
-    if (user && user.emailVerified) {
-      const id = auth.currentUser.uid;
-      const userRef = dbRef.ref(`users/${id}`)
-      userRef.get().then(snapshot => {
-        if(snapshot.val()){
-          const userDB = snapshot.val()
-          return userDB
-        }
-      })
-      .then((userDB) => {
-          
-          return {
-            "id": id,
-            "username": user.displayName,
-            "email": user.email,
-            "profilePic": userDB.profilePic,
-            "attack": userDB.attack
-          }
-        }).then( userToUpload => {
-          dispatch(login())
-          dispatch(setActiveUser(userToUpload))
-        })
-
-    } else {
-      dispatch(setActiveUser(userToUpload))
-    }
-  }
-
-  auth.onAuthStateChanged(user => {
-    logHandler(user)
-  })
-
+  const firebase = useSelector(state => state.firebase )
 
   return (
     <Router>
@@ -70,8 +38,8 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/league" component={League} />
           <Route path="/stadions" component={Stadions} />
-          {logged && <Route path="/players" component={Players} />}
-          {logged && <Route path="/settings" component={Settings} />}
+          {!firebase.profile.isEmpty && <Route path="/players" component={Players} />}
+          {!firebase.profile.isEmpty && <Route path="/settings" component={Settings} />}
           <Route path="/" exact component={Home} />
         </Switch>
         <Modals />

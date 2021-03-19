@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom'
 import firebase from '../../backend/firebase'
 
@@ -8,19 +8,19 @@ import { logout, openLogin, openRegistration } from '../../actions/index'
 
 function User() {
   const dispatch = useDispatch();
-  const activeUser = useSelector(state => state.activeUser)
-  const profilePic = useSelector(state => state.activeUser.profilePic)
-
-
+  const profile = useSelector(state => state.firebase.profile)
+  
+  
   const logoutHandler = e => {
     firebase.auth().signOut()
     .then((e) => {
       dispatch(logout())
     })
   }
-
-  const returnUser = activeUser => {
-    if (!activeUser.id) {
+  
+  const returnUser = profile => {
+    
+    if (profile.isEmpty) {
       return (
         <div className="User">
           <button onClick={() => dispatch(openLogin(true))}>login</button>
@@ -31,14 +31,13 @@ function User() {
       return (
         <div className="User">
           <button onClick={() => logoutHandler()}>Logout</button>
-          {activeUser && <p>{activeUser.username}</p>}
-          {activeUser && <div id="user-icon">
-            <img src={profilePic} alt=""/>
-          </div>}
-          {activeUser &&
+          <p>{profile.username}</p>
+          <div id="user-icon">
+            <img src={profile.profilePic} alt=""/>
+          </div>
           <Link to="/settings">
             <img id="settings-icon" src="../img/settings-icon.png" alt="settings-icon" />
-          </Link>}
+          </Link>
         </div>
       )
     }
@@ -46,7 +45,7 @@ function User() {
 
 
 
-  return (returnUser(activeUser))
+  return (returnUser(profile))
 
 
 }

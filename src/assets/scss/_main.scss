@@ -35,9 +35,18 @@
     height:400px;
     padding:20px;
     margin:20px;
-    background-color: $playerCard-bg-color ;
     border-radius: 20px;
     border: 2px solid $border-color;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    p, h3{
+      width:210px;
+      padding:5px 10px;
+      margin:5px 0;
+      border-radius: 5px;
+      background-color: $bg-color-1;
+    }
     
 
     .img-wrapper{

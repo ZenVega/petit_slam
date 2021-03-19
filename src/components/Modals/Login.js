@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 
-import { auth } from '../../backend/firebase'
+
 import { useDispatch } from 'react-redux'
-import { openLogin, login, openVerifyEmail } from '../../actions/index'
-import {verifyEmail} from './Register'
+import { openLogin } from '../../actions/index'
+import { useFirebase } from "react-redux-firebase";
 
 
 
 function Login() {
   const [inputError, setInputError] = useState(false)
   const dispatch = useDispatch()
+  const firebase = useFirebase();
 
 
   const loginHandler = e => {
@@ -19,17 +20,14 @@ function Login() {
     const email = e.target['login-email'].value
     const password = e.target['login-password'].value
 
-    auth.signInWithEmailAndPassword(email, password).then(cred => {
-      if(cred.user.emailVerified){
-        dispatch(openLogin(false))
-      } else {
-        dispatch(openLogin(false))
-        verifyEmail()
-        dispatch(openVerifyEmail(true))
-      }
-
-    }).catch(error => {
-      setInputError(true)
+    firebase.login({
+      email,
+      password
+    })
+    .then(cred => {
+      dispatch(openLogin(false))
+    }).catch(err => {
+      console.log(err.message)
     })
 
   }

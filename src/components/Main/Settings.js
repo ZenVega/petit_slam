@@ -1,53 +1,56 @@
 import React, {useState} from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import ImageLoader from './Settings/ImageLoader'
-import {setActiveUser} from './../../actions/index'
+import { useFirebase } from 'react-redux-firebase'
 
-import { dbRef, storageRef } from '../../backend/firebase'
 
 function Settings() {
 
-  const activeUser = useSelector(state => state.activeUser)
+  const firebase = useFirebase()
+  const storageRef = firebase.storage().ref()
+
+  const profile = useSelector(state => state.firebase.profile)
+  const id = useSelector(state => state.firebase.auth.uid)
+  const [uploadUser, setUploadUser] = useState(profile)
   const [imageFile, setImageFile] = useState()
-  const userRef = dbRef.ref('users/' + activeUser.id)
-  const storageUserRef = storageRef.ref(`users/${activeUser.id}`)
-  const dispatch = useDispatch()
+
+
 
   
   const handleChange = e => {
+    e.preventDefault()
     switch (e.target.id) {
       case "Username":
-        dispatch(setActiveUser({...activeUser,"username":e.target.value}));
+        setUploadUser({...uploadUser,"username":e.target.value});
         break;
-        case "Attack":
-        dispatch(setActiveUser({...activeUser,"attack":e.target.value}));
+      case "Attack":
+        setUploadUser({...uploadUser,"attack":e.target.value});
         break;
     }
   }
 
-  const handleSubmit = () => {
-    handleImageUpload()
-    userRef.set(activeUser)
-  }
-
-  const handleImageUpload = () => {
+  const handleSubmit = e => {
+    e.preventDefault()
     const uploadToken = renameImage(imageFile)
-    storageUserRef.child(uploadToken).put(imageFile)
+    storageRef.child(uploadToken).put(imageFile)
     .then(snapshot => {
       return snapshot.ref.getDownloadURL()
     })
     .then(url => {
-      const userToUpload = {...activeUser, ...{"profilePic": url}}
-      dispatch(setActiveUser(userToUpload))
+      const upload = {...uploadUser, "profilePic": url}
+      firebase.set(`users/${id}`, upload)
+    })
+    .catch(err => {
+      console.log(err)
     })
   }
-  
+
 
   const renameImage = image => {
     const slash = image.type.indexOf('/')+1
     const type = image.type.substring(slash)
-    const newName = `profilePic.${type}`
+    const newName = `users/${id}/profilePic.${type}`
     return newName
   }
 
@@ -62,7 +65,7 @@ function Settings() {
           type="text"
           onChange={handleChange}
           id="Username"
-          value={activeUser.username}
+          value={uploadUser.username}
         />
       </label>
 
@@ -71,19 +74,19 @@ function Settings() {
           type="text"
           onChange={handleChange}
           id="Attack"
-          value={activeUser.attack}
+          value={uploadUser.attack}
         />
       </label>
 
       <div> 
-        <p>{activeUser.email}</p>
+        <p>{uploadUser.email}</p>
         <button>change mail</button>
       </div>
 
 
-      {activeUser.id && <ImageLoader 
+      <ImageLoader 
         setImageFile={setImageFile}/>
-        }
+        
 
       <button type="submit" onClick={handleSubmit}>Submit</button>
 

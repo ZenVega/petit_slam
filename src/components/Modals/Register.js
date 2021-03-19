@@ -1,13 +1,15 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {auth, dbRef} from '../../backend/firebase'
+import { useFirebase } from "react-redux-firebase";
 
 import { openRegistration, openVerifyEmail, logout } from '../../actions/index'
 
 export const verifyEmail = () => {
+
   const user = auth.currentUser;
+  
   user.sendEmailVerification().then(function() {
-    
   }).catch(function(error) {
     console.log(error.message)
   });
@@ -20,25 +22,37 @@ export default function Register() {
   const [mail2Error, setMail2Error] = useState(false)
   const [password1Error, setPassword1Error] = useState(false)
   const [password2Error, setPassword2Error] = useState(false)
-
+  
   const mailSend = false
+  const firebase = useFirebase();
 
-  const updateUsername = (username, email) => {
-    const id = auth.currentUser.uid;
-    const userRef = dbRef.ref('users/' + id)
-    const user = {
-      username,
-      id,
-      email,
-      "profilePic": "https://firebasestorage.googleapis.com/v0/b/petit-slam.appspot.com/o/firstSignUp%2Fdefault_logo.png?alt=media&token=7e1a8b93-affe-473d-a546-e0011f6bc70e",
-      "attack": ""
+  const createNewUser = ({ email, password, username }) => {
+    const profilePic = "https://firebasestorage.googleapis.com/v0/b/petit-slam.appspot.com/o/firstSignUp%2Fdefault_logo.png?alt=media&token=7e1a8b93-affe-473d-a546-e0011f6bc70e"
+    const attack = ''
+    firebase.createUser(
+      { email, password },
+      { username, email, profilePic, attack }
+    )
+    .then(user => {
+      verifyEmail()
+    })
+    .then(() => {
+      dispatch(openRegistration(false))
+      auth.signOut()
+      dispatch(logout())
+    }).then(() => {
+      dispatch(openVerifyEmail(true))
+      mailSend = true
+    }).catch(error => {
+      if (error.message === "The email address is badly formatted.") {
+        setMail1Error(true)
+      } else if (error.message === "The email address is already in use by another account.") {
+        setMail2Error(true)
+      } else if (error.message === "Password should be at least 6 characters") {
+        setPassword2Error(true)
       }
-      userRef.set(user)
-      
-      auth.currentUser.updateProfile({
-        displayName: username
-      }).catch(err => console.log(err.message))
-    }
+    })
+  }
   
 
 
@@ -56,27 +70,13 @@ export default function Register() {
     const passwordConfirm = e.target['signup-password-confirm'].value
 
     if (password === passwordConfirm) {
-      auth.createUserWithEmailAndPassword(email, password)
-      .then((cred)=>{
-        updateUsername(username, email)
-      }).then(() => {
-        verifyEmail()
-      }).then(() => {
-        dispatch(openRegistration(false))
-        auth.signOut()
-        dispatch(logout())
-      }).then(() => {
-        dispatch(openVerifyEmail(true))
-        mailSend = true
-      }).catch(error => {
-        if (error.message === "The email address is badly formatted.") {
-          setMail1Error(true)
-        } else if (error.message === "The email address is already in use by another account.") {
-          setMail2Error(true)
-        } else if (error.message === "Password should be at least 6 characters") {
-          setPassword2Error(true)
-        }
+
+      createNewUser({
+        email,
+        password,
+        username
       })
+
     } else {
       setPassword1Error(true)
     }
