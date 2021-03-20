@@ -7,7 +7,7 @@ import Footer from './components/Footer/Footer'
 
 import Home from './components/Main/Home'
 import About from './components/Main/About'
-import League from './components/Main/League'
+import League from './components/Main/LeaguePage'
 import Stadions from './components/Main/Stadions'
 import Players from './components/Main/Players'
 import Settings from './components/Main/Settings'
@@ -27,7 +27,7 @@ function App() {
         <Header />
         <Switch>
           <Route path="/about" component={About} />
-          <Route path="/league" component={League} />
+          <Route path="/leagues" component={League} />
           <Route path="/stadions" component={Stadions} />
           {logged && <Route path="/players" component={Players} />}
           {logged && <Route path="/settings" component={Settings} />}

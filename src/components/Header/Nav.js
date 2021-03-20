@@ -15,8 +15,8 @@ function Nav() {
         About
         </NavLink>
 
-      <NavLink to="/league" activeClassName="active">
-        League
+      <NavLink to="/leagues" activeClassName="active">
+        Leagues
         </NavLink>
 
       <NavLink to="/stadions" activeClassName="active">

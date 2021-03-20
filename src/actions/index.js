@@ -11,6 +11,8 @@ export const logout = () => {
   }
 }
 
+
+//OPEN MODALS 
 export const openLogin = bool => {
   return {
     type: 'LOGIN_OPEN',
@@ -35,6 +37,13 @@ export const openRegistrationSuccess = bool => {
 export const openVerifyEmail = bool => {
   return {
     type: 'VERIFY_EMAIL_OPEN',
+    payload: bool
+  }
+}
+
+export const openNewLeague = bool => {
+  return {
+    type: 'NEW_LEAGUE_OPEN',
     payload: bool
   }
 }

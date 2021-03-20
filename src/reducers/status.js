@@ -53,6 +53,11 @@ export const modalOpen = (state = initialModalState, action) => {
         ...state,
         "verifyMailOpen": action.payload
       }
+    case 'NEW_LEAGUE_OPEN':
+      return {
+        ...state,
+        "newLeagueOpen": action.payload
+      }
 
     default:
       return state
