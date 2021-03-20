@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 
 function Nav() {
-  const logged = useSelector(state => state.userStatus.loggedIn)
+  const logged = useSelector(state => state.firebase.profile.isLoaded )
 
   return (
     <div className="Nav">
