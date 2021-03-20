@@ -7,10 +7,10 @@ import Footer from './components/Footer/Footer'
 
 import Home from './components/Main/Home'
 import About from './components/Main/About'
-import League from './components/Main/LeaguePage'
+import League from './components/Main/Leagues/LeagueOverview'
 import Stadions from './components/Main/Stadions'
-import Players from './components/Main/Players'
-import Settings from './components/Main/Settings'
+import Players from './components/Main/Players/Players'
+import Settings from './components/Main/Settings/Settings'
 import Modals from './components/Modals/Modals'
 
 import { useSelector } from 'react-redux'
@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux'
 function App() {
   
   const logged = useSelector(state => state.firebase.profile.isLoaded )
-  console.log(logged)
 
   return (
     <Router>
