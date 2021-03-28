@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux'
 function App() {
   
   const logged = useSelector(state => state.firebase.profile.isLoaded )
+  const verified = useSelector(state => state.firebase.auth.emailVerified )
 
   return (
     <Router>
@@ -26,10 +27,10 @@ function App() {
         <Header />
         <Switch>
           <Route path="/about" component={About} />
-          <Route path="/leagues" component={League} />
+          {logged && verified && <Route path="/leagues" component={League} />}
           <Route path="/stadions" component={Stadions} />
-          {logged && <Route path="/players" component={Players} />}
-          {logged && <Route path="/settings" component={Settings} />}
+          {logged && verified && <Route path="/players" component={Players} />}
+          {logged && verified && <Route path="/settings" component={Settings} />}
           <Route path="/" exact component={Home} />
         </Switch>
         <Modals />
