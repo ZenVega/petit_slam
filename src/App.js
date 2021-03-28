@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux'
 
 
 function App() {
-  
+
   const logged = useSelector(state => state.firebase.profile.isLoaded )
   const verified = useSelector(state => state.firebase.auth.emailVerified )
 

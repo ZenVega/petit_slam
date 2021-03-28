@@ -7,11 +7,8 @@ import PlayerCard from './PlayerCard'
 
 export default function PlayerCardDeck() {
 
-  useFirebaseConnect([
-    { path: 'users' }
-  ])
+  useFirebaseConnect("users")
   const players = useSelector(state => state.firebase.ordered.users)
-
 
   return (
     <div className="PlayerCardDeck">
