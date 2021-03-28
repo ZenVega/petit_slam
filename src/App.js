@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { useFirebaseConnect } from 'react-redux-firebase'
 
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
@@ -17,6 +18,10 @@ import { useSelector } from 'react-redux'
 
 
 function App() {
+
+  const leagueIDs = useSelector(state => state.firebase.profile.leagues)
+  const pathArray = leagueIDs?leagueIDs.map(id => `leagues/${id}`):''
+  useFirebaseConnect(pathArray)
 
   const logged = useSelector(state => state.firebase.profile.isLoaded )
   const verified = useSelector(state => state.firebase.auth.emailVerified )
