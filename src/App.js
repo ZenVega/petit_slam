@@ -5,13 +5,13 @@ import { useFirebaseConnect } from 'react-redux-firebase'
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
-
 import Home from './components/Main/Home'
 import About from './components/Main/About'
 import League from './components/Main/Leagues/LeagueOverview'
 import Stadions from './components/Main/Stadions'
 import Players from './components/Main/Players/Players'
 import Settings from './components/Main/Settings/Settings'
+import LeaguePage from './components/Main/Leagues/LeaguePage';
 import Modals from './components/Modals/Modals'
 
 import { useSelector } from 'react-redux'
@@ -23,7 +23,7 @@ function App() {
   const pathArray = leagueIDs?leagueIDs.map(id => `leagues/${id}`):''
   useFirebaseConnect(pathArray)
 
-  const logged = useSelector(state => state.firebase.profile.isLoaded )
+  const logged = useSelector(state => !state.firebase.auth.isEmpty )
   const verified = useSelector(state => state.firebase.auth.emailVerified )
 
   return (
@@ -32,6 +32,7 @@ function App() {
         <Header />
         <Switch>
           <Route path="/about" component={About} />
+          <Route path={`/leagues/:leagueId`} component={LeaguePage}/>
           {logged && verified && <Route path="/leagues" component={League} />}
           <Route path="/stadions" component={Stadions} />
           {logged && verified && <Route path="/players" component={Players} />}

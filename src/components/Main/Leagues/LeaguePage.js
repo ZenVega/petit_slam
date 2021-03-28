@@ -7,6 +7,7 @@ function LeaguePage() {
 
   return (
     <div className="Main League">
+      <h1>sample league</h1>
 
 
     </div>

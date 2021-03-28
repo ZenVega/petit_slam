@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 
 
 function Nav() {
-  const logged = useSelector(state => state.firebase.profile.isLoaded )
+  const logged = useSelector(state => !state.firebase.auth.isEmpty )
 
   return (
     <div className="Nav">
@@ -15,9 +15,9 @@ function Nav() {
         About
         </NavLink>
 
-      <NavLink to="/leagues" activeClassName="active">
+        {logged && <NavLink to="/leagues" activeClassName="active">
         Leagues
-        </NavLink>
+        </NavLink>}
 
       <NavLink to="/stadions" activeClassName="active">
         Stadions

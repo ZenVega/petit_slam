@@ -9,3 +9,8 @@ export const getLeagues = createSelector(
     return acc;
   }, [])
 )
+
+export const getPathArray = createSelector(
+  state => state.firebase.profile.leagues,
+  leagueIDs => leagueIDs.map(id => `leagues/${id}`)
+)
