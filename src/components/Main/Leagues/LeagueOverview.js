@@ -16,10 +16,12 @@ function LeagueOverview() {
   const getLeagues = createSelector(
     state => state.firebase.profile.leagues,
     state => state.firebase.data.leagues,
-    (ids, leagues) => ids && leagues && ids.map(id => Object.assign({}, leagues[id], {id: id}))
+    (ids, leagues) => ids && leagues && ids.map(id => leagues[id] && {...leagues[id], id})
   )
 
   const leagues = useSelector(getLeagues)
+
+  console.log(leagues)
 
   return (
     <div className="Main LeagueOverview">
@@ -28,11 +30,10 @@ function LeagueOverview() {
         New league
       </button>
 
-      { console.log(leagues) }
-
       {leagues && leagues.map(league => (
+
         <LeaguePreview
-          key={ league.id }
+          key={ league && league.id }
           league={ league }/>
       ))}
 
