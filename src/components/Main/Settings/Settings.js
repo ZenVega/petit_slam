@@ -12,6 +12,7 @@ function Settings() {
 
   const profile = useSelector(state => state.firebase.profile)
   const id = useSelector(state => state.firebase.auth.uid)
+  
   const [uploadUser, setUploadUser] = useState(profile)
   const [imageFile, setImageFile] = useState()
 
@@ -32,18 +33,23 @@ function Settings() {
 
   const handleSubmit = e => {
     e.preventDefault()
-    const uploadToken = renameImage(imageFile)
-    storageRef.child(uploadToken).put(imageFile)
-    .then(snapshot => {
-      return snapshot.ref.getDownloadURL()
-    })
-    .then(url => {
-      const upload = {...uploadUser, "profilePic": url}
-      firebase.set(`users/${id}`, upload)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+
+    if (imageFile) {
+      const uploadToken = renameImage(imageFile)
+      storageRef.child(uploadToken).put(imageFile)
+      .then(snapshot => {
+        return snapshot.ref.getDownloadURL()
+      })
+      .then(url => {
+        const upload = {...uploadUser, "profilePic": url}
+        firebase.set(`users/${id}`, upload)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    } else {
+      firebase.set(`users/${id}`, uploadUser)
+    }
   }
 
 

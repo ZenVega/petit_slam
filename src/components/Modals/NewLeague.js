@@ -24,7 +24,8 @@ function NewLeague() {
       leagueName,
       leagueType,
       "admins":[id],
-      "players": [id]
+      "players": [id],
+      "status": "emerging"
     }
     
     firebase.push(`leagues/`, newLeague)

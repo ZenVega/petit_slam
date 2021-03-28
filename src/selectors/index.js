@@ -3,8 +3,13 @@ import { createSelector } from 'reselect'
 const leagueIds = state => state.firebase.profile.leagues
 const leaguesData = state => state.firebase.data.leagues
 
-export const getLeagues = createSelector(
+const reverseLeagueIds = createSelector(
   leagueIds,
+  ids => ids && ids.reverse()
+)
+
+export const getLeagues = createSelector(
+  reverseLeagueIds,
   leaguesData,
   (ids, leagues) => ids && leagues &&
   ids.reduce((acc, id) => {
