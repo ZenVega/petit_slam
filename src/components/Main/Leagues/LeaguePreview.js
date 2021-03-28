@@ -1,17 +1,10 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 
-
-const LeaguePreview = (props) => {
-  const league = undefined
-
-  
-  
+const LeaguePreview = ({ league }) => {
   return (
     <div className="LeaguePreview">
-      {league && <h2>{league.leagueName}</h2>}
-      {league && <h2>{league.leagueType}</h2>}
-
+      {<h2>{league.leagueName}</h2>}
+      {<h2>{league.leagueType}</h2>}
     </div>
   )
 }

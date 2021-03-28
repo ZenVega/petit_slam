@@ -8,7 +8,6 @@ const allReducers = combineReducers({
   userStatus,
   modalOpen,
   activeUser
-
 })
 
 
