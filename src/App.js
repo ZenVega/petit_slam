@@ -17,8 +17,8 @@ import { useSelector } from 'react-redux'
 
 
 function App() {
-  
-  const logged = useSelector(state => state.firebase.profile.isLoaded )
+
+  const logged = useSelector(state => state.firebase.profile.isLoaded)
 
   return (
     <Router>
