@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
-
 import { useFirebaseConnect } from 'react-redux-firebase'
 
 import PlayerCard from './PlayerCard'

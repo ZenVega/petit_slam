@@ -1,6 +1,11 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useFirebaseConnect } from 'react-redux-firebase'
 
 export default function PlayerCard(props) {
+  useFirebaseConnect(`users/${props.key}`)
+  const userData = useSelector(state => state.firebase.data.users[props.key])
+  console.log(userData)
 
   const backgroundImages = [
     "https://www.creativefabrica.com/wp-content/uploads/2019/05/ABSTRACT-PSYCHEDELIC-BACKGROUND-by-Asep-Maulana-Ramdhan-1-580x386.jpg",
@@ -18,11 +23,11 @@ export default function PlayerCard(props) {
       <div 
         className="img-wrapper" 
         style={{ 
-          backgroundImage: `url(${props.profilePic})` 
+          backgroundImage: `url(${userData.profilePic})` 
         }}>
       </div>
-      <h3>{props.username}</h3>
-      <p>{props.attack}</p>
+      <h3>{userData.username}</h3>
+      <p>{userData.attack}</p>
     </div>
   )
 }
