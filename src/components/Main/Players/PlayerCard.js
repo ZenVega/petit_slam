@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useFirebaseConnect } from 'react-redux-firebase'
 
 export default function PlayerCard({id}) {
   
@@ -12,7 +11,6 @@ export default function PlayerCard({id}) {
   ]
   const randomNum = Math.floor(Math.random() * Math.floor(backgroundImages.length));
   const userData = useSelector(state => state.firebase.data.users[id])
-  console.log(userData)
   
   return (
     <div 
@@ -20,14 +18,14 @@ export default function PlayerCard({id}) {
       style={{ 
         backgroundImage: `url(${backgroundImages[randomNum]})` 
       }}>
-      {/* <div 
+      <div 
         className="img-wrapper" 
         style={{ 
           backgroundImage: `url(${userData.profilePic})` 
         }}>
       </div>
       <h3>{userData.username}</h3>
-      <p>{userData.attack}</p> */}
+      <p>{userData.attack}</p>
     </div>
   )
 }

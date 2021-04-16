@@ -1,26 +1,23 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
-import { useFirebaseConnect } from 'react-redux-firebase'
 
 import PlayerCard from './PlayerCard'
 
 export default function PlayerCardDeck() {
 
-  useFirebaseConnect("users")
-  const players = useSelector(state => state.firebase.ordered.users)
+  const players = useSelector(state => state.firebase.data.users)
+  const playerIDs = players && Object.keys(players)
+  console.log(players, playerIDs)
 
   return (
     <div className="PlayerCardDeck">
-      {players && players.map((player, index) => (
+      {players && playerIDs.map((player, index) => (
         <PlayerCard
           key={index}
-          username={player.value.username}
-          attack={player.value.attack}
-          profilePic={player.value.profilePic}
+          id={player}
         />
       )
       )}
-
     </div>
   )
 }
