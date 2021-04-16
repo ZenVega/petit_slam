@@ -19,7 +19,7 @@ export const getLeagues = createSelector(
   }, [])
 )
 
-export const getPathArray = createSelector(
+export const getLeaguePathArray = createSelector(
   leagueIds,
   leagueIDs => leagueIDs && leagueIDs.map(id => `leagues/${id}`)
 )
@@ -31,9 +31,22 @@ export const getLeagueById = id => {
     )
 }
 
-export const getPlayerById = id => {
+export const getPlayersInLeague = id => {
   return createSelector(
-    playerData,
-    players => players && players[id]
+    leaguesData,
+    leagues => leagues && leagues[id].players
   )
 }
+
+export const getLoadedLeagues = createSelector(
+  leaguesData,
+  leagues => leagues && Object.keys(leagues)
+)
+
+export const getPlayersFromLoadedLeagues = createSelector(
+  leaguesData,
+  getLoadedLeagues,
+  (data, leagues) => leagues && [...new Set(leagues.map(
+    id => data[id].players
+  ).reduce((a, b) => a.concat(b)))].map(id => `users/${id}`)
+)

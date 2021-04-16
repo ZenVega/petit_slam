@@ -15,17 +15,22 @@ import Settings from './components/Main/Settings/Settings'
 import LeaguePage from './components/Main/Leagues/LeaguePage';
 import Modals from './components/Modals/Modals'
 
-import { getPathArray } from './selectors/index'
+import { getLeaguePathArray, getPlayersFromLoadedLeagues, getLoadedLeagues } from './selectors/index'
 
 
 function App() {
 
-  
   const logged = useSelector(state => !state.firebase.auth.isEmpty )
   const verified = useSelector(state => state.firebase.auth.emailVerified )
+
   
-  const pathArray = useSelector(getPathArray)
-  useFirebaseConnect(pathArray)
+  const leaguePathArray = useSelector(getLeaguePathArray)
+  useFirebaseConnect(leaguePathArray)
+
+  const playerIDs = useSelector(getPlayersFromLoadedLeagues)
+  useFirebaseConnect(playerIDs)
+
+
 
   return (
     <Router>

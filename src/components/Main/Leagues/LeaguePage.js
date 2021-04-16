@@ -2,17 +2,19 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 
-import { getLeagueById, getPlayerById } from '../../../selectors/index'
+
+import { getLeagueById, getPlayersInLeague } from '../../../selectors/index'
 
 import PlayerCard from '../Players/PlayerCard'
 
 
 
 function LeaguePage() {
+  
   let { leagueId } = useParams();
   const league = useSelector(getLeagueById(leagueId))
-  const players = useSelector(getPlayerById(league.players[0]))
-  console.log(players)
+  const players = useSelector(getPlayersInLeague(leagueId))
+
 
   return (
     <div className="Main League">
@@ -25,12 +27,10 @@ function LeaguePage() {
       {league&&<h1>{league.leagueType}</h1>}
       {league&&<h2>status: {league.status}</h2>}
       <h2>players</h2>
-      {league&&league.players.map((player, index) => (
+      {players&&players.map((player, index) => (
         <PlayerCard
         key={index}
-        username={"user"}
-        attack={"attack"}
-        profilePic={"pic"}
+        id={player}
       />
       ))}
 

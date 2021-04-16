@@ -14,7 +14,6 @@ const rrfConfig = {
   // useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
   // enableClaims: true // Get custom claims along with the profile
 }
-
 const initialState = {};
 const store = createStore(
   allReducers,
