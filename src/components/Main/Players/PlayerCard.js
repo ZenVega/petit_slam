@@ -13,11 +13,11 @@ export default function PlayerCard({id}) {
   const randomNum = Math.floor(Math.random() * Math.floor(backgroundImages.length));
   const userData = useSelector(state => state.firebase.data.users[id])
 
-  if (!isLoaded(id) || !isLoaded(userData) ) {
+  if (!isLoaded(userData)) {
     return <div>Loading...</div>
   }
-  if (isEmpty(id) || isEmpty(userData) ) {
-    return <div>Loading...</div>
+  if (isEmpty(userData)) {
+    return <div>No data available...</div>
   }
   
   return (
@@ -26,14 +26,14 @@ export default function PlayerCard({id}) {
       style={{ 
         backgroundImage: `url(${backgroundImages[randomNum]})` 
       }}>
-      {userData && <div 
+      <div 
         className="img-wrapper" 
         style={{ 
           backgroundImage: `url(${userData.profilePic})` 
         }}>
-      </div>}
-      {userData && <h3>{userData.username}</h3>}
-      {userData && <p>{userData.attack}</p>}
+      </div>
+      <h3>{userData.username}</h3>
+      <p>{userData.attack}</p>
     </div>
   )
 }

@@ -33,8 +33,13 @@ function App() {
   const playersLoaded = useSelector(state => state.firebase.data.users)
 
   if(!isLoaded(leaguesLoaded) || !isLoaded(playersLoaded)) {
-    return <div>...Loading</div>
-
+    return (
+    <Router>
+      <div className="App">
+        <Header />
+        <div>...Loading</div>
+      </div>
+    </Router>)
   }
 
 

@@ -21,7 +21,7 @@ function LeaguePage() {
   const inLeague = players && players.indexOf(ownId) != -1? true: false
   const isAdmin = admins && admins.indexOf(ownId) != -1? true: false
 
-  if (!isLoaded(league) || !isLoaded(players)) {
+  if (!isLoaded(players)) {
     return <div>Loading...</div>
   }
 
