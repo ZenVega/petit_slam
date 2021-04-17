@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { useFirebaseConnect } from 'react-redux-firebase'
+import { isLoaded, useFirebaseConnect } from 'react-redux-firebase'
 
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
@@ -15,21 +15,27 @@ import Settings from './components/Main/Settings/Settings'
 import LeaguePage from './components/Main/Leagues/LeaguePage';
 import Modals from './components/Modals/Modals'
 
-import { getLeaguePathArray, getPlayersFromLoadedLeagues, getLoadedLeagues } from './selectors/index'
+import { getLeaguePathArray, getRelatedPlayersPathArray } from './selectors/index'
 
 
 function App() {
 
   const logged = useSelector(state => !state.firebase.auth.isEmpty )
   const verified = useSelector(state => state.firebase.auth.emailVerified )
-
   
   const leaguePathArray = useSelector(getLeaguePathArray)
   useFirebaseConnect(leaguePathArray)
 
-  const playerIDs = useSelector(getPlayersFromLoadedLeagues)
+  const playerIDs = useSelector(getRelatedPlayersPathArray)
   useFirebaseConnect(playerIDs)
 
+  const leaguesLoaded = useSelector(state => state.firebase.data.leagues)
+  const playersLoaded = useSelector(state => state.firebase.data.users)
+
+  if(!isLoaded(leaguesLoaded) || !isLoaded(playersLoaded)) {
+    return <div>...Loading</div>
+
+  }
 
 
   return (

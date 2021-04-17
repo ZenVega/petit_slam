@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { isLoaded, isEmpty } from 'react-redux-firebase'
 
 export default function PlayerCard({id}) {
   
@@ -11,6 +12,13 @@ export default function PlayerCard({id}) {
   ]
   const randomNum = Math.floor(Math.random() * Math.floor(backgroundImages.length));
   const userData = useSelector(state => state.firebase.data.users[id])
+
+  if (!isLoaded(id) || !isLoaded(userData) ) {
+    return <div>Loading...</div>
+  }
+  if (isEmpty(id) || isEmpty(userData) ) {
+    return <div>Loading...</div>
+  }
   
   return (
     <div 
@@ -18,14 +26,14 @@ export default function PlayerCard({id}) {
       style={{ 
         backgroundImage: `url(${backgroundImages[randomNum]})` 
       }}>
-      <div 
+      {userData && <div 
         className="img-wrapper" 
         style={{ 
           backgroundImage: `url(${userData.profilePic})` 
         }}>
-      </div>
-      <h3>{userData.username}</h3>
-      <p>{userData.attack}</p>
+      </div>}
+      {userData && <h3>{userData.username}</h3>}
+      {userData && <p>{userData.attack}</p>}
     </div>
   )
 }
