@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { isLoaded, isEmpty } from 'react-redux-firebase'
 
-export default function PlayerCard({id}) {
+export default function PlayerCard({id, preview}) {
   
   const backgroundImages = [
     "https://www.creativefabrica.com/wp-content/uploads/2019/05/ABSTRACT-PSYCHEDELIC-BACKGROUND-by-Asep-Maulana-Ramdhan-1-580x386.jpg",
@@ -21,7 +21,7 @@ export default function PlayerCard({id}) {
   
   return (
     <div 
-      className="PlayerCard"
+      className={ preview? "PlayerCard preview": "PlayerCard"}
       style={{ 
         backgroundImage: `url(${backgroundImages[randomNum]})` 
       }}>
@@ -32,7 +32,7 @@ export default function PlayerCard({id}) {
         }}>
       </div>
       <h3>{userData.username}</h3>
-      <p>{userData.attack}</p>
+      {!preview && <p>{userData.attack}</p>}
     </div>
   )
 }
