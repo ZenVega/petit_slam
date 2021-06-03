@@ -1,10 +1,11 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, useEffect } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 import { isLoaded, isEmpty, useFirebase, useFirebaseConnect } from 'react-redux-firebase'
 
 import { toggleInviteFriends } from '../../../actions/index'
 import { getLeagueById, getPlayersInLeague, getAdminsInLeague } from '../../../selectors/index'
+import { deleteItemFromFirebase } from '../../../helper_functions/firebase_controls'
 
 import PlayerCard from '../Players/PlayerCard'
 
@@ -13,31 +14,25 @@ import PlayerCard from '../Players/PlayerCard'
 function LeaguePage() {
   const dispatch = useDispatch()
 
-  let { leagueId } = useParams();
-  useFirebaseConnect(`leagues/${leagueId}`)
-  
-  const inLeague = useSelector(state => state.firebase.profile.leagues.includes(leagueId))
-
   const firebase = useFirebase();
+  const ownId = useSelector(state => state.firebase.auth.uid)
+  const{ leagueId } = useParams();
+
+
+  useFirebaseConnect(`leagues/${leagueId}`)
+
   const league = useSelector(getLeagueById(leagueId))
+  const inLeague = useSelector(state => state.firebase.profile.leagues.includes(leagueId))
+  
   const players = useSelector(getPlayersInLeague(leagueId))
   const admins = useSelector(getAdminsInLeague(leagueId))
   
-  const ownId = useSelector(state => state.firebase.auth.uid)
   const isAdmin = admins && admins.indexOf(ownId) != -1? true: false
-
-
+  
+  
   const leaveLeague = () => {
     const userRef = firebase.ref(`users/${ownId}/leagues/`)
     const leagueRef = firebase.ref(`leagues/${leagueId}/players/`)
-    
-    const deleteItemFromFirebase = (ref, itemId) => {
-      ref.get()
-      .then((snapshot) => {
-        ref.set(
-          snapshot.exists()?snapshot.val().filter(id => id != itemId):[])
-      })
-    }
     
     deleteItemFromFirebase(userRef, leagueId)
     deleteItemFromFirebase(leagueRef, ownId)
@@ -47,14 +42,15 @@ function LeaguePage() {
       deleteItemFromFirebase(adminRef, ownId)
     }
   }
-
+  
   const inviteFriends = () => {
     dispatch(toggleInviteFriends(true))
   }
-
-  if (!isLoaded(players)) {
+  
+  if (!isLoaded(league)) {
     return <div>Loading...</div>
   }
+
 
   if (isEmpty(league)) {
     return <div>This league doesn't exist</div>

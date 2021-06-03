@@ -32,16 +32,15 @@ function App() {
   const leaguesLoaded = useSelector(state => state.firebase.data.leagues)
   const playersLoaded = useSelector(state => state.firebase.data.users)
   
-  // if(!isLoaded(leaguesLoaded) || !isLoaded(playersLoaded)) {
-  //   console.log("not loaded")
-  //   return (
-  //   <Router>
-  //     <div className="App">
-  //       <Header />
-  //       <div>...Loading</div>
-  //     </div>
-  //   </Router>)
-  // }
+  if(!isLoaded(leaguesLoaded) || !isLoaded(playersLoaded)) {
+    return (
+    <Router>
+      <div className="App">
+        <Header />
+        <div>...Loading</div>
+      </div>
+    </Router>)
+  }
 
   return (
     <Router>
