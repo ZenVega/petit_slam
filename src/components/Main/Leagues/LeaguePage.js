@@ -1,10 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 import { isLoaded, isEmpty } from 'react-redux-firebase'
 import { useFirebase } from 'react-redux-firebase'
 
-
+import { toggleInviteFriends } from '../../../actions/index'
 import { getLeagueById, getPlayersInLeague, getAdminsInLeague } from '../../../selectors/index'
 
 import PlayerCard from '../Players/PlayerCard'
@@ -12,6 +12,7 @@ import PlayerCard from '../Players/PlayerCard'
 
 
 function LeaguePage() {
+  const dispatch = useDispatch()
   
   let { leagueId } = useParams();
   const firebase = useFirebase();
@@ -19,11 +20,17 @@ function LeaguePage() {
   const players = useSelector(getPlayersInLeague(leagueId))
   const admins = useSelector(getAdminsInLeague(leagueId))
   
+  
   const ownId = useSelector(state => state.firebase.auth.uid)
   const inLeague = players && players.indexOf(ownId) != -1? true: false
   const isAdmin = admins && admins.indexOf(ownId) != -1? true: false
 
   const leaveLeague = () => {
+    //this deletes all the players leagues
+    firebase.remove(`users/${ownId}/leagues/`, leagueId)
+    .then( cred => {console.log('league removed from users data',cred)})
+    .catch(err => console.log(err))
+    
     firebase.remove(`leagues/${leagueId}/players/`, ownId)
     .then( cred => {console.log('removed from league',cred)})
     .catch(err => console.log(err))
@@ -33,11 +40,10 @@ function LeaguePage() {
     .then( cred => {console.log('removed from leagues admins',cred)})
     .catch(err => console.log(err))
     }
-   
-    //this deletes all the players leagues
-    firebase.remove(`users/${ownId}/leagues/`, leagueId)
-    .then( cred => {console.log('league removed from users data',cred)})
-    .catch(err => console.log(err))
+  }
+
+  const inviteFriends = () => {
+    dispatch(toggleInviteFriends(true))
   }
 
   if (!isLoaded(players)) {
@@ -63,6 +69,8 @@ function LeaguePage() {
       ? <button>join league</button>
       : <button
         onClick={leaveLeague}>leave league</button>}
+      <button
+      onClick={inviteFriends}>invite friends</button>
       <h2>players</h2>
       {players.map((player, index) => (
         <PlayerCard

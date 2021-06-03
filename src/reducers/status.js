@@ -25,7 +25,8 @@ const initialModalState = {
   "loginOpen": false,
   "registerOpen": false,
   "registerSuccessOpen": false,
-  "verifyMailOpen": false
+  "verifyMailOpen": false,
+  "toggleInviteFriends": false
 }
 
 export const modalOpen = (state = initialModalState, action) => {
@@ -57,6 +58,11 @@ export const modalOpen = (state = initialModalState, action) => {
       return {
         ...state,
         "newLeagueOpen": action.payload
+      }
+    case 'TOGGLE_INVITE_FRIENDS':
+      return {
+        ...state,
+        "toggleInviteFriends": action.payload
       }
 
     default:

@@ -6,10 +6,12 @@ import NewLeague from './NewLeague'
 import Register from './Register'
 import VerifyEmail from './VerifyEmail'
 import RegisterSuccess from './RegisterSuccess'
+import InviteFriends from './InviteFriends'
 
 function Modals() {
 
-  const { loginOpen, registerOpen, registerSuccessOpen, verifyMailOpen, newLeagueOpen } = useSelector(state => state.modalOpen)
+  const { loginOpen, registerOpen, registerSuccessOpen, verifyMailOpen, newLeagueOpen, toggleInviteFriends } = useSelector(state => state.modalOpen)
+
   return (
     <div>
       {loginOpen && <Login />}
@@ -17,6 +19,7 @@ function Modals() {
       {registerSuccessOpen && <RegisterSuccess />}
       {verifyMailOpen && <VerifyEmail />}
       {newLeagueOpen && <NewLeague />}
+      {toggleInviteFriends && <InviteFriends />}
     </div>
   );
 }

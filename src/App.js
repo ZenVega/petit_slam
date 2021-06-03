@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { isLoaded, useFirebaseConnect } from 'react-redux-firebase'
+import { isLoaded, isEmpty, useFirebaseConnect } from 'react-redux-firebase'
 
 import './assets/scss/App.scss'
 import Header from './components/Header/Header'
@@ -31,17 +31,17 @@ function App() {
 
   const leaguesLoaded = useSelector(state => state.firebase.data.leagues)
   const playersLoaded = useSelector(state => state.firebase.data.users)
-
-  if(!isLoaded(leaguesLoaded) || !isLoaded(playersLoaded)) {
-    return (
-    <Router>
-      <div className="App">
-        <Header />
-        <div>...Loading</div>
-      </div>
-    </Router>)
-  }
-
+  
+  // if(!isLoaded(leaguesLoaded) || !isLoaded(playersLoaded)) {
+  //   console.log("not loaded")
+  //   return (
+  //   <Router>
+  //     <div className="App">
+  //       <Header />
+  //       <div>...Loading</div>
+  //     </div>
+  //   </Router>)
+  // }
 
   return (
     <Router>

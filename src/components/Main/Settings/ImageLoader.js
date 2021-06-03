@@ -7,7 +7,6 @@ export default function ImageLoader(props) {
   const profilePic = useSelector(state => state.firebase.profile.profilePic)
   const [imageURL, setImageURL] = useState(profilePic)
 
-
   const handleImageInput = e => {
     const image = e.target.files[0]
     props.setImageFile(image)

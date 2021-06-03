@@ -7,14 +7,13 @@ export default function PlayerCardDeck() {
 
   const players = useSelector(state => state.firebase.data.users)
   const playerIDs = players && Object.keys(players)
-  console.log(players, playerIDs)
 
   return (
     <div className="PlayerCardDeck">
-      {players && playerIDs.map((player, index) => (
+      {players && playerIDs.map((playerID, index) => (
         <PlayerCard
           key={index}
-          id={player}
+          id={playerID}
         />
       )
       )}

@@ -12,10 +12,24 @@ export const logout = () => {
 }
 
 
+export const setActiveUser = data => {
+  return {
+    type: 'ACTIVE_USER',
+    payload: data
+  }
+}
+
 //OPEN MODALS 
 export const openLogin = bool => {
   return {
     type: 'LOGIN_OPEN',
+    payload: bool
+  }
+}
+
+export const toggleInviteFriends = bool => {
+  return {
+    type: 'TOGGLE_INVITE_FRIENDS',
     payload: bool
   }
 }
@@ -45,12 +59,5 @@ export const openNewLeague = bool => {
   return {
     type: 'NEW_LEAGUE_OPEN',
     payload: bool
-  }
-}
-
-export const setActiveUser = data => {
-  return {
-    type: 'ACTIVE_USER',
-    payload: data
   }
 }
