@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 
 const leagueIds = state => state.firebase.profile.leagues
 const leaguesData = state => state.firebase.data.leagues
-const playerData = state => state.firebase.ordered.users
+const playersData = state => state.firebase.data.users
 
 const reverseLeagueIds = createSelector(
   leagueIds,
@@ -62,3 +62,11 @@ export const getRelatedPlayersPathArray = createSelector(
   getRelatedPlayers,
   players => players && players.map(id => `users/${id}`)
 )
+
+export const getRelatedPlayersNotInLeague = leagueId => {
+  return createSelector(
+    playersData,
+    players => Object.entries(players)
+    .filter(player => player[1].leagues? !player[1].leagues.includes(leagueId): true)
+    )
+}

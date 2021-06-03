@@ -13,7 +13,7 @@ function Modals() {
   const { loginOpen, registerOpen, registerSuccessOpen, verifyMailOpen, newLeagueOpen, toggleInviteFriends } = useSelector(state => state.modalOpen)
 
   return (
-    <div>
+    <div >
       {loginOpen && <Login />}
       {registerOpen && <Register />}
       {registerSuccessOpen && <RegisterSuccess />}
