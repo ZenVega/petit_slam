@@ -1,8 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
-import { isLoaded, isEmpty } from 'react-redux-firebase'
-import { useFirebase } from 'react-redux-firebase'
+import { isLoaded, isEmpty, useFirebase, useFirebaseConnect } from 'react-redux-firebase'
 
 import { toggleInviteFriends } from '../../../actions/index'
 import { getLeagueById, getPlayersInLeague, getAdminsInLeague } from '../../../selectors/index'
@@ -13,32 +12,39 @@ import PlayerCard from '../Players/PlayerCard'
 
 function LeaguePage() {
   const dispatch = useDispatch()
-  
+
   let { leagueId } = useParams();
+  useFirebaseConnect(`leagues/${leagueId}`)
+  
+  const inLeague = useSelector(state => state.firebase.profile.leagues.includes(leagueId))
+
   const firebase = useFirebase();
   const league = useSelector(getLeagueById(leagueId))
   const players = useSelector(getPlayersInLeague(leagueId))
   const admins = useSelector(getAdminsInLeague(leagueId))
   
-  
   const ownId = useSelector(state => state.firebase.auth.uid)
-  const inLeague = players && players.indexOf(ownId) != -1? true: false
   const isAdmin = admins && admins.indexOf(ownId) != -1? true: false
 
+
   const leaveLeague = () => {
-    //this deletes all the players leagues
-    firebase.remove(`users/${ownId}/leagues/`, leagueId)
-    .then( cred => {console.log('league removed from users data',cred)})
-    .catch(err => console.log(err))
+    const userRef = firebase.ref(`users/${ownId}/leagues/`)
+    const leagueRef = firebase.ref(`leagues/${leagueId}/players/`)
     
-    firebase.remove(`leagues/${leagueId}/players/`, ownId)
-    .then( cred => {console.log('removed from league',cred)})
-    .catch(err => console.log(err))
+    const deleteItemFromFirebase = (ref, itemId) => {
+      ref.get()
+      .then((snapshot) => {
+        ref.set(
+          snapshot.exists()?snapshot.val().filter(id => id != itemId):[])
+      })
+    }
+    
+    deleteItemFromFirebase(userRef, leagueId)
+    deleteItemFromFirebase(leagueRef, ownId)
     
     if(isAdmin){
-      firebase.remove(`leagues/${leagueId}/admins/`, ownId)
-    .then( cred => {console.log('removed from leagues admins',cred)})
-    .catch(err => console.log(err))
+      const adminRef = firebase.ref(`leagues/${leagueId}/admins/`)
+      deleteItemFromFirebase(adminRef, ownId)
     }
   }
 
