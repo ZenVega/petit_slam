@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector, useDispatch, useEffect } from 'react-redux'
+import React, {useEffect, useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 import { isLoaded, isEmpty, useFirebase, useFirebaseConnect } from 'react-redux-firebase'
 
@@ -10,26 +10,20 @@ import { deleteItemFromFirebase } from '../../../helper_functions/firebase_contr
 import PlayerCard from '../Players/PlayerCard'
 
 
-
-function LeaguePage() {
+const LeaguePage = ({league, leagueId}) => {
+  
   const dispatch = useDispatch()
-
   const firebase = useFirebase();
   const ownId = useSelector(state => state.firebase.auth.uid)
-  const{ leagueId } = useParams();
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [inLeague, setInLeague] = useState(false)
+  
+ useEffect(() => {
+   setInLeague(league && league.players.indexOf(ownId) != -1)
+   setIsAdmin(league && league.admins.indexOf(ownId) != -1)
+ }, [league])
 
 
-  useFirebaseConnect(`leagues/${leagueId}`)
-
-  const league = useSelector(getLeagueById(leagueId))
-  const inLeague = useSelector(state => state.firebase.profile.leagues.includes(leagueId))
-  
-  const players = useSelector(getPlayersInLeague(leagueId))
-  const admins = useSelector(getAdminsInLeague(leagueId))
-  
-  const isAdmin = admins && admins.indexOf(ownId) != -1? true: false
-  
-  
   const leaveLeague = () => {
     const userRef = firebase.ref(`users/${ownId}/leagues/`)
     const leagueRef = firebase.ref(`leagues/${leagueId}/players/`)
@@ -47,13 +41,8 @@ function LeaguePage() {
     dispatch(toggleInviteFriends(true))
   }
   
-  if (!isLoaded(league)) {
+  if (!league) {
     return <div>Loading...</div>
-  }
-
-
-  if (isEmpty(league)) {
-    return <div>This league doesn't exist</div>
   }
 
   return (
@@ -74,10 +63,10 @@ function LeaguePage() {
       <button
       onClick={inviteFriends}>invite friends</button>
       <h2>players</h2>
-      {players.map((player, index) => (
+      {league.players.map((player, index) => (
         <PlayerCard
         key={index}
-        id={player}
+        id={player.id}
       />
       ))}
 

@@ -13,6 +13,7 @@ import Stadions from './components/Main/Stadions'
 import Players from './components/Main/Players/Players'
 import Settings from './components/Main/Settings/Settings'
 import LeaguePage from './components/Main/Leagues/LeaguePage';
+import LeaguePagePopulated from './helper_functions/populateLeaguePage';
 import Modals from './components/Modals/Modals'
 
 import { getLeaguePathArray, getRelatedPlayersPathArray } from './selectors/index'
@@ -48,7 +49,7 @@ function App() {
         <Header />
         <Switch>
           <Route path="/about" component={About} />
-          <Route path={`/leagues/:leagueId`} component={LeaguePage}/>
+          <Route path={`/leagues/:leagueId`} component={LeaguePagePopulated}/>
           {logged && verified && <Route path="/leagues" component={League} />}
           <Route path="/stadions" component={Stadions} />
           {logged && verified && <Route path="/players" component={Players} />}
