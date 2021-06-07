@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, Link } from 'react-router-dom'
-import { isLoaded, isEmpty, useFirebase, useFirebaseConnect } from 'react-redux-firebase'
+import { Link } from 'react-router-dom'
+import { useFirebase } from 'react-redux-firebase'
 
 import { toggleInviteFriends } from '../../../actions/index'
-import { getLeagueById, getPlayersInLeague, getAdminsInLeague } from '../../../selectors/index'
+
 import { deleteItemFromFirebase } from '../../../helper_functions/firebase_controls'
 
 import PlayerCard from '../Players/PlayerCard'
