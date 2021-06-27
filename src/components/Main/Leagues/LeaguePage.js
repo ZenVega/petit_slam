@@ -6,6 +6,7 @@ import { useFirebase } from 'react-redux-firebase'
 import { toggleInviteFriends } from '../../../actions/index'
 
 import { deleteItemFromFirebase } from '../../../helper_functions/firebase_controls'
+import { addItemToFirebase } from '../../../helper_functions/firebase_controls'
 
 import PlayerCard from '../Players/PlayerCard'
 
@@ -19,9 +20,9 @@ const LeaguePage = ({league, leagueId}) => {
   const [inLeague, setInLeague] = useState(false)
   
  useEffect(() => {
-   setInLeague(league && league.players.indexOf(ownId) != -1)
-   setIsAdmin(league && league.admins.indexOf(ownId) != -1)
- }, [league])
+   setInLeague(league && league.players.some(player => player.id === ownId))
+   setIsAdmin(league && league.admins.some(admin => admin.id === ownId))
+ }, [league, ownId])
 
 
   const leaveLeague = () => {
@@ -35,6 +36,14 @@ const LeaguePage = ({league, leagueId}) => {
       const adminRef = firebase.ref(`leagues/${leagueId}/admins/`)
       deleteItemFromFirebase(adminRef, ownId)
     }
+  }
+
+  const joinLeague = () => {
+    const userRef = firebase.ref(`users/${ownId}/leagues/`)
+    const leagueRef = firebase.ref(`leagues/${leagueId}/players/`)
+    
+    addItemToFirebase(userRef, leagueId)
+    addItemToFirebase(leagueRef, ownId)
   }
   
   const inviteFriends = () => {
@@ -57,7 +66,8 @@ const LeaguePage = ({league, leagueId}) => {
       <h2>status: {league.status}</h2>
       {isAdmin && <h2>You are an admin of this league</h2> }
       {!inLeague
-      ? <button>join league</button>
+      ? <button
+        onClick={joinLeague}>join league</button>
       : <button
         onClick={leaveLeague}>leave league</button>}
       <button
